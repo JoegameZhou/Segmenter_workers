@@ -1,0 +1,44 @@
+# ===== Architecture ===== #
+encoder: vit_large_patch16_384
+decoder: mask_transformer
+
+# ===== Dataset ===== #
+data_url: ../data/Cityscapes
+set: CityscapesMS
+num_classes: 19
+train_image_size: 768
+infer_image_size: 1024
+
+# ===== Learning Rate Policy ======== #
+optimizer: momentum
+base_lr: 0.01
+warmup_lr: 0.00001
+min_lr: 0.00001
+lr_scheduler: poly_lr
+warmup_length: 0
+
+
+# ===== Network training config ===== #
+amp_level: O1
+clip_global_norm_value: 5.
+is_dynamic_loss_scale: True
+epochs: 216
+weight_decay: 0.
+momentum: 0.9
+train_batch_size: 1
+eval_batch_size: 1
+encoder_drop_path_rate: 0.1
+encoder_dropout: 0.0
+decoder_drop_path_rate: 0.0
+decoder_dropout: 0.1
+pretrained: s3://open-data/pretrained/vit_large_patch16_384.ckpt
+
+# ===== Eval dataset config ===== #
+window_size: 768
+window_stride: 512
+crop_size: 768
+ignore_label: 255
+
+# ===== Hardware setup ===== #
+num_parallel_workers: 16
+device_target: Ascend
